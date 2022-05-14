@@ -19,7 +19,7 @@ public class Login implements Initializable {
 
     public void onSubmitButtonAction(ActionEvent actionEvent) {
         // System.out.println("This button was clicked");
-        LoginLabel.setText("Click click");
+        LoginLabel.setText("Button was clicked");
     }
 
 }
