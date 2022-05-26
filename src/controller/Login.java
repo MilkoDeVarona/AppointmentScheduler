@@ -9,17 +9,17 @@ import java.util.ResourceBundle;
 
 public class Login implements Initializable {
 
-    public Label LoginLabel;
+    public Label loginLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // System.out.println("I am initialized");
-        LoginLabel.setText("I am the label!");
+        loginLabel.setText("I am the label!");
     }
 
     public void onSubmitButtonAction(ActionEvent actionEvent) {
         // System.out.println("This button was clicked");
-        LoginLabel.setText("This button was clicked");
+        loginLabel.setText("This button was clicked");
     }
 
 }

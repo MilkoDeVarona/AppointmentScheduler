@@ -1,11 +1,14 @@
 package main;
 
-import helper.JDBC;
+import database.FruitsQuery;
+import database.JDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -17,10 +20,21 @@ public class Main extends Application {
         stage.show();
     }
 
-    public static void main (String[] args) {
+    public static void main (String[] args) throws SQLException {
         JDBC.openConnection();
-        JDBC.closeConnection();
+
         launch(args);
+
+        /*int rowsAffected = FruitsQuery.delete(7);
+        if (rowsAffected > 0) {
+            System.out.println("Delete successful!");
+        } else {
+            System.out.println("Delete failed!");
+        }*/
+
+        // FruitsQuery.select(3);
+
+        JDBC.closeConnection();
     }
 
 }
