@@ -14,22 +14,34 @@ public class Home {
     Stage stage;
     Parent scene;
 
-    @FXML public void onCustomersButton(ActionEvent actionEvent) {
-        System.out.println("View customers button clicked!");
+    @FXML public void onCustomersButton(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+        stage.setTitle("Customers");
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
-    @FXML public void onAppointmentsButton(ActionEvent actionEvent) {
-        System.out.println("View appointments button clicked!");
+    @FXML public void onAppointmentsButton(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+        stage.setTitle("Appointments");
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
-    @FXML public void onReportsButton(ActionEvent actionEvent) {
-        System.out.println("View reports button clicked!");
+    @FXML public void onReportsButton(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
+        stage.setTitle("Reports");
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
-    @FXML public void onLogOutButton(ActionEvent actionEvent) throws IOException {
-        stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+    @FXML public void onLogOutButton(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-        stage.setTitle("Login");
+        stage.setTitle("Log In");
         stage.setScene(new Scene(scene));
         stage.show();
     }

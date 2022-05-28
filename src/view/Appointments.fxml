@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="635.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Appointments">
+    <children>
+        <Label layoutX="426.0" layoutY="70.0" text="Appointments" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font></Label>
+        <TableView fx:id="appointmentsTable" layoutX="20.0" layoutY="163.0" prefHeight="400.0" prefWidth="960.0">
+            <columns>
+                <TableColumn fx:id="apptsColumnID" prefWidth="46.0" text="ID" />
+            <TableColumn fx:id="apptsColumnTitle" prefWidth="75.0" text="Title" />
+                <TableColumn fx:id="apptsColumnDescription" prefWidth="94.0" text="Description" />
+            <TableColumn fx:id="apptsColumnLocation" prefWidth="103.0" text="Location" />
+            <TableColumn fx:id="apptsColumnContact" prefWidth="142.0" text="Contact" />
+                <TableColumn fx:id="apptsColumnType" minWidth="4.0" prefWidth="123.0" text="Type" />
+                <TableColumn fx:id="apptsColumnStartDate" prefWidth="100.0" text="Starts at" />
+                <TableColumn fx:id="apptsColumnEndDate" prefWidth="100.0" text="Ends at" />
+                <TableColumn fx:id="apptsColumnCustomerID" prefWidth="86.0" text="Customer ID" />
+            <TableColumn fx:id="apptsColumnUserID" prefWidth="90.0" text="User ID" />
+            </columns>
+        </TableView>
+        <Button layoutX="800.0" layoutY="584.0" mnemonicParsing="false" onAction="#onDeleteAppointmentButton" prefHeight="30.0" prefWidth="180.0" text="Delete Appointment" />
+        <Button layoutX="614.0" layoutY="584.0" mnemonicParsing="false" onAction="#onModifyAppointmentButton" prefHeight="30.0" prefWidth="180.0" text="Modify Appointment" />
+        <Button layoutX="428.0" layoutY="584.0" mnemonicParsing="false" onAction="#onAddAppointmentButton" prefHeight="30.0" prefWidth="180.0" text="Add Appointment" />
+        <Button layoutX="20.0" layoutY="584.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="30.0" prefWidth="60.0" text="Home" />
+      <RadioButton fx:id="radioButtonMonth" layoutX="784.0" layoutY="131.0" mnemonicParsing="false" onAction="#onRadioButtonMonth" text="View monthly">
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+         <toggleGroup>
+            <ToggleGroup fx:id="toggleGroup" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="radioButtonWeek" layoutX="698.0" layoutY="131.0" mnemonicParsing="false" onAction="#onRadioButtonWeek" text="View weekly" toggleGroup="$toggleGroup" />
+      <RadioButton fx:id="radioButtonAll" layoutX="898.0" layoutY="131.0" mnemonicParsing="false" onAction="#onRadioButtonAll" selected="true" text="View all" toggleGroup="$toggleGroup">
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </RadioButton>
+    </children>
+</AnchorPane>

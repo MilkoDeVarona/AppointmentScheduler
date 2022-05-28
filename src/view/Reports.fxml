@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="635.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
+   <children>
+      <Label layoutX="460.0" layoutY="69.0" text="Reports" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font></Label>
+      <Button layoutX="20.0" layoutY="584.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="30.0" prefWidth="60.0" text="Home" />
+      <TabPane layoutX="21.0" layoutY="164.0" prefHeight="400.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Total Customer Appointments by Type and Month">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox fx:id="reportsCBAppointments" layoutY="68.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Appointment Type" />
+                        <ComboBox fx:id="reportsCBMonth" layoutX="192.0" layoutY="68.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Month">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </ComboBox>
+                        <Button layoutX="385.0" layoutY="68.0" mnemonicParsing="false" onAction="#onTotalApptmsGenerate" prefHeight="30.0" prefWidth="65.0" text="Generate" />
+                        <Label fx:id="reportsTotalByTypeMonth" layoutX="462.0" layoutY="68.0" prefHeight="30.0" prefWidth="100.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab text="Contact Appointments">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox fx:id="reportsCBContact" layoutY="67.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Contact" />
+                        <TableView fx:id="reportsCtcTable" layoutY="97.0" prefHeight="272.0" prefWidth="960.0">
+                          <columns>
+                              <TableColumn fx:id="reportsClmApptID" prefWidth="104.0" text="Appointment ID" />
+                            <TableColumn fx:id="reportsClmTitle" prefWidth="138.0" text="Title" />
+                              <TableColumn fx:id="reportsClmType" prefWidth="115.0" text="Type" />
+                              <TableColumn fx:id="reportsClmDescription" prefWidth="214.0" text="Description" />
+                              <TableColumn fx:id="reportsClmStart" prefWidth="149.0" text="Starts at" />
+                            <TableColumn fx:id="reportsClmEnd" prefWidth="149.0" text="Ends at" />
+                              <TableColumn fx:id="reportsClmCustID" prefWidth="90.0" text="Customer ID" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Total Contacts by Country">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox fx:id="reportsCBCountry" layoutY="70.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Country" />
+                        <Label fx:id="reportsTotalByCountry" layoutX="191.0" layoutY="70.0" prefHeight="30.0" prefWidth="100.0" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
