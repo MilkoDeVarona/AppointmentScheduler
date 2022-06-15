@@ -7,7 +7,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Login">
    <children>
       <TextField fx:id="userNameTextField" focusTraversable="false" layoutX="111.0" layoutY="129.0" prefHeight="35.0" prefWidth="180.0" promptText="User name" />
-      <TextField fx:id="passwordTextField" focusTraversable="false" layoutX="111.0" layoutY="183.0" prefHeight="35.0" prefWidth="180.0" promptText="Password" />
+      <PasswordField fx:id="passwordTextField" layoutX="111.0" layoutY="183.0" prefHeight="35.0" prefWidth="180.0" promptText="Password" />
       <Label layoutX="168.0" layoutY="51.0" text="Log In">
          <font>
             <Font name="System Bold" size="22.0" />
@@ -24,5 +24,6 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <Label fx:id="loginErrorLabel" alignment="CENTER" layoutX="9.0" layoutY="94.0" prefHeight="17.0" prefWidth="380.0" style="-fx-text-fill: #FF0000;" />
    </children>
 </AnchorPane>
