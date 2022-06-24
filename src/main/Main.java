@@ -1,7 +1,7 @@
 package main;
 
-import database.FruitsQuery;
-import database.JDBC;
+import database.DBConnection;
+import database.DAOCustomers;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,20 +21,9 @@ public class Main extends Application {
     }
 
     public static void main (String[] args) throws SQLException {
-        JDBC.openConnection();
-
+        DBConnection.startConnection();
         launch(args);
-
-        /*int rowsAffected = FruitsQuery.delete(7);
-        if (rowsAffected > 0) {
-            System.out.println("Delete successful!");
-        } else {
-            System.out.println("Delete failed!");
-        }*/
-
-        // FruitsQuery.select(3);
-
-        JDBC.closeConnection();
+        DBConnection.closeConnection();
     }
 
 }

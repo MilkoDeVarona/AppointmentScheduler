@@ -3,28 +3,19 @@ package model;
 public class Countries {
 
     private int countryID;
-    private String country;
+    private String countryName;
 
-    public Countries(int countryID, String country) {
+    public Countries(int countryID, String countryName) {
         this.countryID = countryID;
-        this.country = country;
+        this.countryName = countryName;
     }
 
     public int getCountryID() {
         return countryID;
     }
 
-    public void setCountryID(int countryID) {
-        this.countryID = countryID;
-    }
-
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public String getCountryName() {
+        return countryName;
     }
 
 }
