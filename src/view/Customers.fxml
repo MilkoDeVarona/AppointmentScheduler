@@ -13,12 +13,12 @@
       <TableView fx:id="customersTable" layoutX="20.0" layoutY="163.0" prefHeight="400.0" prefWidth="960.0">
         <columns>
           <TableColumn fx:id="customersColumnID" prefWidth="46.0" text="ID" />
-          <TableColumn fx:id="customersColumnName" prefWidth="135.0" text="Name" />
-            <TableColumn fx:id="customersColumnPhone" minWidth="4.0" prefWidth="119.0" text=" Phone Number" />
-            <TableColumn fx:id="customersColumnAddress" prefWidth="237.0" text="Address" />
+          <TableColumn fx:id="customersColumnName" prefWidth="155.0" text="Name" />
+            <TableColumn fx:id="customersColumnPhone" minWidth="4.0" prefWidth="145.0" text=" Phone Number" />
+            <TableColumn fx:id="customersColumnAddress" prefWidth="191.0" text="Address" />
             <TableColumn fx:id="customersColumnPostalCode" prefWidth="91.0" text="Postal Code" />
-            <TableColumn fx:id="customersColumnDivision" prefWidth="149.0" text="State / Province" />
-            <TableColumn fx:id="customersColumnCountry" prefWidth="182.0" text="Country" />
+            <TableColumn fx:id="customersColumnDivision" prefWidth="186.0" text="State / Province" />
+            <TableColumn fx:id="customersColumnCountry" prefWidth="145.0" text="Country" />
         </columns>
       </TableView>
       <Button layoutX="800.0" layoutY="584.0" mnemonicParsing="false" onAction="#onDeleteCustomerButton" prefHeight="30.0" prefWidth="180.0" text="Delete Customer" />

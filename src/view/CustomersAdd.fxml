@@ -42,8 +42,8 @@
             <TextField fx:id="addAddress" prefHeight="30.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="addPostalCode" prefHeight="30.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="addPhone" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ComboBox fx:id="addCountryCB" prefHeight="30.0" prefWidth="201.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <ComboBox fx:id="addDivisionCB" prefHeight="30.0" prefWidth="201.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <ComboBox fx:id="addCountryCB" onAction="#sortDivisions" prefHeight="30.0" prefWidth="201.0" promptText="Select country" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="addDivisionCB" prefHeight="30.0" prefWidth="201.0" promptText="Select state/province" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
       <Button layoutX="300.0" layoutY="505.0" mnemonicParsing="false" onAction="#onCancelButton" prefHeight="30.0" prefWidth="60.0" text="Cancel" />
