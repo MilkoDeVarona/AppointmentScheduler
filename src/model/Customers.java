@@ -88,4 +88,9 @@ public class Customers {
         this.division = division;
     }
 
+    @Override
+    public String toString() {
+        return customerID + " - " + customerName;
+    }
+
 }

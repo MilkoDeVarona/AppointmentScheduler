@@ -42,8 +42,8 @@
                   <Font name="System Italic" size="12.0" />
                </font></TextField>
             <TextField fx:id="modAppointmentTitle" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="addAppointmentDescription" prefHeight="30.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="addAppointmentLocation" prefHeight="30.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="modAppointmentDescription" prefHeight="30.0" prefWidth="203.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="modAppointmentLocation" prefHeight="30.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ComboBox fx:id="modAppointmentType" prefHeight="30.0" prefWidth="201.0" promptText="Select type" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label text="End" GridPane.rowIndex="8" />
             <Label text="Customer ID" GridPane.rowIndex="9" />

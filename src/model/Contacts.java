@@ -37,4 +37,9 @@ public class Contacts {
         this.contactEmail = contactEmail;
     }
 
+    @Override
+    public String toString() {
+        return contactID + " - " + contactName;
+    }
+
 }

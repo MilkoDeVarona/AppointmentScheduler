@@ -1,5 +1,4 @@
 package controller;
-
 import database.DAOCustomers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,10 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -55,8 +54,8 @@ public class Customers implements Initializable {
     // Modify an existing customer button
     @FXML
     void onModifyCustomerButton(ActionEvent event) throws IOException {
-        model.Customers toModify = customersTable.getSelectionModel().getSelectedItem();
-        if (toModify == null) {
+        CustomersModify.modCustomer(customersTable.getSelectionModel().getSelectedItem());
+        if (customersTable.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setContentText("Please select a customer to modify");
@@ -92,6 +91,7 @@ public class Customers implements Initializable {
         }
     }
 
+    // Method initializes customer table
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

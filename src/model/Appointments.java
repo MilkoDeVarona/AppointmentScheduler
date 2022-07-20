@@ -7,28 +7,29 @@ import java.time.LocalTime;
 public class Appointments {
 
     private int appointmentID, customerID, userID, contactID;
-    private String title, description, location, type;
+    private String title, description, location, type, contactName;
     private LocalDate startDate, endDate;
-    private LocalTime startTime, endTime;
+    //private LocalTime startTime, endTime;
     private LocalDateTime start, end;
 
     public Appointments(int appointmentID, int customerID, int userID, int contactID,
-                        String title, String description, String location, String type,
+                        String title, String description, String location, String type, String contactName,
                         LocalDate startDate, LocalDate endDate,
-                        LocalTime startTime, LocalTime endTime,
+                        //LocalTime startTime, LocalTime endTime,
                         LocalDateTime start, LocalDateTime end) {
         this.appointmentID = appointmentID;
         this.customerID = customerID;
         this.userID = userID;
         this.contactID = contactID;
+        this.contactName = contactName;
         this.title = title;
         this.description = description;
         this.location = location;
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        //this.startTime = startTime;
+        //this.endTime = endTime;
         this.start = start;
         this.end = end;
     }
@@ -104,6 +105,14 @@ public class Appointments {
         this.type = type;
     }
 
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
 
     public LocalDate getStartDate() {
         return startDate;
@@ -123,7 +132,7 @@ public class Appointments {
     }
 
 
-    public LocalTime getStartTime() {
+    /*public LocalTime getStartTime() {
         return startTime;
     }
 
@@ -138,7 +147,7 @@ public class Appointments {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
-    }
+    }*/
 
 
     public LocalDateTime getStart() {

@@ -3,7 +3,6 @@ package database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Countries;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +19,6 @@ public class DAOCountries {
             while (rs.next()) {
                 int countryID = rs.getInt("Country_ID");
                 String country = rs.getString("Country");
-                //System.out.println(countryID + " | " + country);
                 Countries ctr = new Countries (countryID, country);
                 countriesList.add(ctr);
             }
@@ -40,7 +38,7 @@ public class DAOCountries {
         while (rs.next()) {
             int countryID = rs.getInt("Country_ID");
             String countryName = rs.getString("Country");
-            System.out.println(countryID + " | " + countryName);
+            //System.out.println(countryID + " | " + countryName);
             return new Countries(countryID, countryName);
         }
         return null;

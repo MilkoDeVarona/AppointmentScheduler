@@ -49,7 +49,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Total Contacts by Country">
+          <Tab text="Total Customers by Country">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

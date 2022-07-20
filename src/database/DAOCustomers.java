@@ -2,6 +2,7 @@ package database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customers;
+import model.Divisions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,7 @@ public class DAOCustomers {
     public static ObservableList<Customers> getAllCustomers () throws SQLException{
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS fld ON c.Division_ID = fld.Division_ID INNER JOIN countries AS ctr ON ctr.Country_ID = fld.COUNTRY_ID";
+            String sql = "SELECT * FROM customers AS c INNER JOIN first_level_divisions AS fld ON c.Division_ID = fld.Division_ID INNER JOIN countries AS ctr ON ctr.Country_ID = fld.COUNTRY_ID ORDER BY Customer_ID";
             PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -35,7 +36,8 @@ public class DAOCustomers {
     }
 
     // Create a new customer in the database
-    public static void addCustomer (String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivision) throws SQLException {
+    public static boolean addCustomer (String customerName, String customerAddress, String customerPostalCode, String customerPhone, String customerDivision) throws SQLException {
+        Divisions selectedDivision = DAODivisions.getDivisionID(customerDivision);
         try {
             String sql = "INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
@@ -43,15 +45,18 @@ public class DAOCustomers {
             ps.setString(2, customerAddress);
             ps.setString(3, customerPostalCode);
             ps.setString(4, customerPhone);
-            ps.setInt(5, customerDivision);
+            ps.setInt(5, selectedDivision.getDivisionID());
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     // Update customer info in the database
-    public static void updateCustomer (String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivision, int customerID) throws SQLException {
+    public static boolean updateCustomer (String customerName, String customerAddress, String customerPostalCode, String customerPhone, String  customerDivision, int customerID) throws SQLException {
+        Divisions selectedDivision = DAODivisions.getDivisionID(customerDivision);
         try {
             String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
             PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
@@ -59,11 +64,13 @@ public class DAOCustomers {
             ps.setString(2, customerAddress);
             ps.setString(3, customerPostalCode);
             ps.setString(4, customerPhone);
-            ps.setInt(5, customerDivision);
+            ps.setInt(5, selectedDivision.getDivisionID());
             ps.setInt(6, customerID);
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -78,28 +85,5 @@ public class DAOCustomers {
             e.printStackTrace();
         }
     }
-
-    /******************************************************************************/
-
-    /*
-    // Create
-    public static int insert (String fruitName, int colorID) throws SQLException {
-        String sql = "INSERT INTO FRUITS (Fruit_Name, Color_ID) VALUES (?, ?)";
-        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
-        ps.setString(1, fruitName);
-        ps.setInt(2, colorID);
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected;
-    }
-
-    // Update
-    public static int update (int fruitID, String fruitName) throws SQLException {
-        String sql = "UPDATE FRUITS SET FRUIT_NAME = ? WHERE Fruit_ID = ?";
-        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
-        ps.setString(1, fruitName);
-        ps.setInt(2, fruitID);
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected;
-    }*/
 
 }

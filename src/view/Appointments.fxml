@@ -29,7 +29,7 @@
         <Button layoutX="614.0" layoutY="584.0" mnemonicParsing="false" onAction="#onModifyAppointmentButton" prefHeight="30.0" prefWidth="180.0" text="Modify Appointment" />
         <Button layoutX="428.0" layoutY="584.0" mnemonicParsing="false" onAction="#onAddAppointmentButton" prefHeight="30.0" prefWidth="180.0" text="Add Appointment" />
         <Button layoutX="20.0" layoutY="584.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="30.0" prefWidth="60.0" text="Home" />
-      <RadioButton fx:id="radioButtonMonth" layoutX="784.0" layoutY="131.0" mnemonicParsing="false" onAction="#onRadioButtonMonth" text="View monthly">
+      <RadioButton fx:id="radioButtonMonth" layoutX="784.0" layoutY="131.0" mnemonicParsing="false" onAction="#onViewAppointments" text="View monthly">
          <padding>
             <Insets left="20.0" />
          </padding>
@@ -37,8 +37,8 @@
             <ToggleGroup fx:id="toggleGroup" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="radioButtonWeek" layoutX="698.0" layoutY="131.0" mnemonicParsing="false" onAction="#onRadioButtonWeek" text="View weekly" toggleGroup="$toggleGroup" />
-      <RadioButton fx:id="radioButtonAll" layoutX="898.0" layoutY="131.0" mnemonicParsing="false" onAction="#onRadioButtonAll" selected="true" text="View all" toggleGroup="$toggleGroup">
+      <RadioButton fx:id="radioButtonWeek" layoutX="698.0" layoutY="131.0" mnemonicParsing="false" onAction="#onViewAppointments" text="View weekly" toggleGroup="$toggleGroup" />
+      <RadioButton fx:id="radioButtonAll" layoutX="898.0" layoutY="131.0" mnemonicParsing="false" onAction="#onViewAppointments" selected="true" text="View all" toggleGroup="$toggleGroup">
          <padding>
             <Insets left="20.0" />
          </padding>

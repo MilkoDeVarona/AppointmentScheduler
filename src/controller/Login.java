@@ -1,5 +1,6 @@
 package controller;
 
+import database.DAOUSERS;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -39,11 +41,22 @@ public class Login implements Initializable {
         } else if (passwordTextField.getText().isBlank()) {
             loginErrorLabel.setText("Please, enter a password to login!");
         } else {
-            stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
-            stage.setTitle("Home");
-            stage.setScene(new Scene(scene));
-            stage.show();
+
+
+            try {
+                boolean isValid = DAOUSERS.checkUserLogin(userNameTextField.getText(), passwordTextField.getText());
+                if (isValid) {
+                    stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+                    scene = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
+                    stage.setTitle("Home");
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                } else {
+                    loginErrorLabel.setText("Incorrect user name or password");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

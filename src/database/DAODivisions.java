@@ -1,10 +1,8 @@
 package database;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Countries;
 import model.Divisions;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,6 +80,23 @@ public class DAODivisions {
             String division = rs.getString("Division");
             System.out.println(countriesID + " | " + divisionID + " | " + division);
         }
+    }
+
+    // Get division id
+    public static Divisions getDivisionID (String divisionByID) throws SQLException {
+        String sql = "SELECT * FROM first_level_divisions WHERE Division = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setString(1, divisionByID);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Divisions selectedDivision = new Divisions(
+                    rs.getInt("Division_ID"),
+                    rs.getInt("Country_ID"),
+                    rs.getString("Division")
+            );
+            return selectedDivision;
+        }
+        return null;
     }
 
 }
