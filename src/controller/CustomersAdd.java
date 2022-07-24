@@ -47,18 +47,21 @@ public class CustomersAdd implements Initializable {
         addCountryCB.setItems(countryList);
     }
 
-    // Populates divisions combo box ***********************************************************************************
+    // Populates divisions combo box. Lambda expression waits for country combo box to be selected to populate divisions combo box
     private void populateDivisionCB(){
-        ObservableList <String> divisionList = FXCollections.observableArrayList();
-        try {
-            ObservableList<Divisions> divisions = DAODivisions.getAllDivisions();
-            for (Divisions d: divisions) {
-                divisionList.add(d.getDivision());
+        addCountryCB.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == null) {
+                addDivisionCB.getItems().clear();
+                addDivisionCB.setDisable(true);
+            } else {
+                try {
+                    addDivisionCB.setDisable(false);
+                    addDivisionCB.setItems(DAOCustomers.getDivisionsByCountry(addCountryCB.getValue()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        addDivisionCB.setItems(divisionList);
+        });
     }
 
     // Selects divisions based on country selected *********************************************************************

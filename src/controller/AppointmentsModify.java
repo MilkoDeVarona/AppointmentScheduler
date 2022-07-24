@@ -2,7 +2,7 @@ package controller;
 import database.DAOAppointments;
 import database.DAOContacts;
 import database.DAOCustomers;
-import database.DAOUSERS;
+import database.DAOUsers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -119,7 +119,7 @@ public class AppointmentsModify implements Initializable {
 //            usersIDList.add(u.getUserID());
 //        }
 //        modAppointmentUserID.setItems(usersIDList);
-        modAppointmentUserID.setItems(DAOUSERS.getAllUsers());
+        modAppointmentUserID.setItems(DAOUsers.getAllUsers());
     }
 
     // Accepts selected customer from Customers screen *****************************************************************

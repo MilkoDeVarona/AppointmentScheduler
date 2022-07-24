@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="635.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
+<AnchorPane prefHeight="635.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
    <children>
       <Label layoutX="460.0" layoutY="69.0" text="Reports" textAlignment="CENTER">
          <font>
@@ -18,14 +24,14 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox fx:id="reportsCBAppointments" layoutY="68.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Appointment Type" />
-                        <ComboBox fx:id="reportsCBMonth" layoutX="192.0" layoutY="68.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Month">
+                        <ComboBox fx:id="reportsCBAppointments" layoutX="193.0" layoutY="68.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Appointment Type" />
+                        <ComboBox fx:id="reportsCBMonth" layoutY="68.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Month">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </ComboBox>
                         <Button layoutX="385.0" layoutY="68.0" mnemonicParsing="false" onAction="#onTotalApptmsGenerate" prefHeight="30.0" prefWidth="65.0" text="Generate" />
-                        <Label fx:id="reportsTotalByTypeMonth" layoutX="462.0" layoutY="68.0" prefHeight="30.0" prefWidth="100.0" />
+                        <Label fx:id="reportsTotalByTypeMonth" layoutX="462.0" layoutY="68.0" prefHeight="30.0" prefWidth="497.0" />
                      </children>
                   </AnchorPane>
               </content>
@@ -34,7 +40,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox fx:id="reportsCBContact" layoutY="67.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Contact" />
+                        <ComboBox fx:id="reportsCBContact" layoutY="67.0" onAction="#onAppointmentsByContact" prefHeight="30.0" prefWidth="180.0" promptText="Select Contact" />
                         <TableView fx:id="reportsCtcTable" layoutY="97.0" prefHeight="272.0" prefWidth="960.0">
                           <columns>
                               <TableColumn fx:id="reportsClmApptID" prefWidth="104.0" text="Appointment ID" />
@@ -53,8 +59,8 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox fx:id="reportsCBCountry" layoutY="70.0" prefHeight="30.0" prefWidth="180.0" promptText="Select Country" />
-                        <Label fx:id="reportsTotalByCountry" layoutX="191.0" layoutY="70.0" prefHeight="30.0" prefWidth="100.0" />
+                        <ComboBox fx:id="reportsCBCountry" layoutY="70.0" onAction="#onTotalCustomersByCountry" prefHeight="30.0" prefWidth="180.0" promptText="Select Country" />
+                        <Label fx:id="reportsTotalByCountry" layoutX="191.0" layoutY="70.0" prefHeight="30.0" prefWidth="766.0" />
                      </children></AnchorPane>
             </content>
           </Tab>

@@ -1,26 +1,38 @@
 package controller;
-
+import database.DAOAppointments;
+import database.DAOContacts;
+import database.DAOCountries;
+import database.DAOCustomers;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointments;
+import model.Contacts;
+import model.Countries;
+import model.Customers;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class Reports {
-
+public class Reports implements Initializable {
     Stage stage;
     Parent scene;
-
-    @FXML private ComboBox<?> reportsCBAppointments;
-    @FXML private ComboBox<?> reportsCBContact;
-    @FXML private ComboBox<?> reportsCBCountry;
-    @FXML private ComboBox<?> reportsCBMonth;
-
-    @FXML private TableView<?> reportsCtcTable;
+    @FXML private ComboBox<String> reportsCBAppointments;
+    @FXML private ComboBox<String> reportsCBMonth;
+    @FXML private ComboBox<Contacts> reportsCBContact;
+    @FXML private ComboBox<Countries> reportsCBCountry;
+    @FXML private TableView<Appointments> reportsCtcTable;
     @FXML private TableColumn<?, ?> reportsClmApptID;
     @FXML private TableColumn<?, ?> reportsClmCustID;
     @FXML private TableColumn<?, ?> reportsClmDescription;
@@ -28,10 +40,86 @@ public class Reports {
     @FXML private TableColumn<?, ?> reportsClmStart;
     @FXML private TableColumn<?, ?> reportsClmTitle;
     @FXML private TableColumn<?, ?> reportsClmType;
-
-    @FXML private Label reportsTotalByCountry;
     @FXML private Label reportsTotalByTypeMonth;
+    @FXML private Label reportsTotalByCountry;
 
+    // Report 1 ********************************************************************************************************
+
+    // Populates Type combo box
+    private void populateTypeCB() {
+        ObservableList<String> typeList = FXCollections.observableArrayList("Planning Session", "De-Briefing", "Informal", "Phone Call", "Priority", "Brainstorm");
+        reportsCBAppointments.setItems(typeList);
+    }
+
+    // Populates Month combo box
+    private void populateMonthCB() {
+        ObservableList<String> monthList = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        reportsCBMonth.setItems(monthList);
+    }
+
+    // Generates total number of appointments by type and month
+    @FXML void onTotalApptmsGenerate(ActionEvent event) {
+        String type = reportsCBAppointments.getValue();
+        String month = reportsCBMonth.getValue();
+        if (type == null && month == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setContentText("Please select a month and a type");
+            alert.showAndWait();
+        } else if (type == null && month != null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setContentText("Please select a type");
+            alert.showAndWait();
+        } else if (month == null && type != null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setContentText("Please select a month");
+            alert.showAndWait();
+        } else {
+            int total = DAOAppointments.getTotalAppointmentsByTypeAndMonth(type, month);
+            reportsTotalByTypeMonth.setText("The total number of " + "'" + type + "'" + " appointments for the month of " + month + " is " + total);
+        }
+    }
+
+
+    // Report 2 ********************************************************************************************************
+
+    // Populates Contact combo box
+    private void populateContactCB() throws SQLException {
+        reportsCBContact.setItems(DAOContacts.getAllContacts());
+    }
+
+    // Method filters appointments by contact. Lambda expression returns a contact to the filtered list if its ID matches the ID of the contact selected in the combo box
+    public ObservableList<Appointments> updateTable () throws SQLException {
+        ObservableList<Appointments> getAllAppointments = DAOAppointments.viewAllAppointments();
+        FilteredList<Appointments> appointmentsByContact = new FilteredList<>(getAllAppointments, i -> i.getContactID() == reportsCBContact.getSelectionModel().getSelectedItem().getContactID());
+        return appointmentsByContact;
+    }
+
+    // Shows all appointments for the selected contact
+    @FXML void onAppointmentsByContact(ActionEvent event) throws SQLException {
+        reportsCtcTable.setItems(updateTable());
+    }
+
+
+    // Report 3 ********************************************************************************************************
+
+    // Populates Country combo box
+    private void populateCountryCB () throws SQLException {
+        reportsCBCountry.setItems(DAOCountries.getAllCountries());
+    }
+
+    // Shows total number of customers per country
+    @FXML void onTotalCustomersByCountry(ActionEvent event) {
+        String country = reportsCBCountry.getSelectionModel().getSelectedItem().getCountryName();
+        int total = DAOCustomers.getTotalCustomersByCountry(country);
+        reportsTotalByCountry.setText(country + " has a total of " + String.valueOf(total) + " customers.");
+    }
+
+    // *****************************************************************************************************************
+
+    // Goes back to Home screen
     @FXML void onBackButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
@@ -40,8 +128,30 @@ public class Reports {
         stage.show();
     }
 
-    @FXML void onTotalApptmsGenerate(ActionEvent event) {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            // Report 1
+            populateTypeCB();
+            populateMonthCB();
 
+            // Report 2
+            populateContactCB();
+            reportsCtcTable.setItems(DAOAppointments.viewAllAppointments());
+            reportsClmApptID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+            reportsClmTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+            reportsClmType.setCellValueFactory(new PropertyValueFactory<>("type"));
+            reportsClmDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+            reportsClmStart.setCellValueFactory(new PropertyValueFactory<>("start"));
+            reportsClmEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+            reportsClmCustID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+
+            // Report 3
+            populateCountryCB();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

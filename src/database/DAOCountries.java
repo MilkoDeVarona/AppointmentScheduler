@@ -1,5 +1,4 @@
 package database;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Countries;
@@ -22,8 +21,7 @@ public class DAOCountries {
                 Countries ctr = new Countries (countryID, country);
                 countriesList.add(ctr);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return countriesList;

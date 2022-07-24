@@ -163,4 +163,22 @@ public class DAOAppointments {
         }
     }
 
+    // Get total number of appointments by type and month
+    public static int getTotalAppointmentsByTypeAndMonth (String type, String month) {
+        int total = 0;
+        try {
+            String sql = "SELECT count(*) FROM appointments WHERE Type = ? AND MONTHNAME(Start) = ?";
+            PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+            ps.setString(1, type);
+            ps.setString(2, month);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt("count(*)");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
 }

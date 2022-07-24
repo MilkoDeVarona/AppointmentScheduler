@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DAOUSERS {
+public class DAOUsers {
 
     // Method gets all users
     public static ObservableList<Users> getAllUsers() {

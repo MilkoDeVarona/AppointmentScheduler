@@ -86,4 +86,38 @@ public class DAOCustomers {
         }
     }
 
+    // Gets total number of customers by country
+    public static int getTotalCustomersByCountry (String country) {
+        int total = 0;
+        try {
+            String sql = "SELECT count(*) FROM customers AS c INNER JOIN first_level_divisions AS fld ON c.Division_ID = fld.Division_ID INNER JOIN countries AS ctr ON ctr.Country_ID = fld.COUNTRY_ID WHERE Country = ?";
+            PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+            ps.setString(1, country);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt("count(*)");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    // Gets divisions by selected country
+    public static ObservableList<String> getDivisionsByCountry (String country) throws SQLException{
+        ObservableList<String> divisionsList = FXCollections.observableArrayList();
+        try {
+            String sql = "SELECT c.Country, c.Country_ID,  d.Division_ID, d.Division FROM countries as c RIGHT OUTER JOIN first_level_divisions AS d ON c.Country_ID = d.Country_ID WHERE c.Country = ?";
+            PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+            ps.setString(1, country);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                divisionsList.add(rs.getString("Division"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return divisionsList;
+    }
+
 }

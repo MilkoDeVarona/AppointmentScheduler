@@ -18,10 +18,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Appointments implements Initializable {
-
     Stage stage;
     Parent scene;
-
     static ObservableList<model.Appointments> appointmentsInfo;
     @FXML private TableView<model.Appointments> appointmentsTable;
     @FXML private TableColumn<?, ?> apptsColumnContact;
@@ -89,7 +87,7 @@ public class Appointments implements Initializable {
         }
     }
 
-    // Delete the selected appointment button
+    // Deletes selected appointment
     @FXML void onDeleteAppointmentButton(ActionEvent event) throws SQLException {
         model.Appointments selected = appointmentsTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
@@ -103,9 +101,15 @@ public class Appointments implements Initializable {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 model.Appointments a = appointmentsTable.getSelectionModel().getSelectedItem();
                 DAOAppointments.deleteAppointment(a.getAppointmentID());
+
                 appointmentsInfo = DAOAppointments.viewAllAppointments();
                 appointmentsTable.setItems(appointmentsInfo);
                 appointmentsTable.refresh();
+
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                alert2.setTitle("Appointment successfully deleted");
+                alert2.setContentText("Appointment " + selected.getAppointmentID() + " (" + selected.getType() + ") has been deleted");
+                alert2.showAndWait();
             }
         }
     }
