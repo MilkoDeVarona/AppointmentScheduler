@@ -227,6 +227,42 @@ public class AppointmentsModify implements Initializable {
             alert.showAndWait();
             return false;
         }
+
+        // Checks for overlapping appointments
+        ObservableList<Appointments> appointmentsList = DAOAppointments.viewAllAppointments();
+        for (Appointments a : appointmentsList) {
+            if (a.getCustomerID() != modAppointmentCustID.getValue().getCustomerID()) {
+                continue;
+            }
+            LocalDateTime existingStart = a.getStart();
+            LocalDateTime newStart = startDateTime();
+            LocalDateTime existingEnd = a.getEnd();
+            LocalDateTime newEnd = endDateTime();
+
+            if ((existingStart.isAfter(newStart) && existingStart.isBefore(newEnd)) || existingStart.isEqual(newStart)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning!");
+                alert.setContentText("New appointment overlaps with existing Appointment. Select new time");
+                alert.showAndWait();
+                return false;
+            }
+
+            if ((existingEnd.isAfter(newStart) && existingEnd.isBefore(newEnd)) || existingEnd.isEqual(newEnd)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning!");
+                alert.setContentText("New appointment overlaps with existing Appointment. Select new time");
+                alert.showAndWait();
+                return false;
+            }
+
+            if (existingStart.isBefore(newStart) && existingEnd.isAfter(newEnd)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning!");
+                alert.setContentText("New appointment overlaps with existing Appointment. Select new time");
+                alert.showAndWait();
+                return false;
+            }
+        }
         return true;
     }
 

@@ -56,18 +56,22 @@ public class CustomersModify implements Initializable {
 
     /**
      * Method populates divisions combo box.
+     * <p>Lambda expression waits for country combo box to be selected to populate divisions combo box.</p>
      */
     private void populateDivisionComboBox(){
-        ObservableList <String> divisionList = FXCollections.observableArrayList();
-        try {
-            ObservableList<Divisions> divisions = DAODivisions.getAllDivisions();
-            for (Divisions d: divisions) {
-                divisionList.add(d.getDivision());
+        modCountryCB.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                modDivisionCB.getItems().clear();
+                modDivisionCB.setDisable(true);
+            } else {
+                try {
+                    modDivisionCB.setDisable(false);
+                    modDivisionCB.setItems(DAOCustomers.getDivisionsByCountry(modCountryCB.getValue()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        modDivisionCB.setItems(divisionList);
+        });
     }
 
     /**

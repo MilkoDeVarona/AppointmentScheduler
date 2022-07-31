@@ -101,16 +101,21 @@ public class DAOCustomers {
     }
 
     /**
-     * Method deletes a customer from the database.
+     * Method deletes selected customer and associated appointments from the database.
      * @param CustomerID
      * @throws SQLException
      */
     public static void deleteCustomer (int CustomerID) throws SQLException {
         try {
-            String sql = "DELETE FROM customers WHERE Customer_Id = ?";
-            PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
-            ps.setInt(1, CustomerID);
-            ps.executeUpdate();
+            String sqlA = "DELETE FROM appointments WHERE Customer_ID = ?";
+            PreparedStatement psA = DBConnection.connection.prepareStatement(sqlA);
+            psA.setInt(1, CustomerID);
+            psA.executeUpdate();
+
+            String sqlC = "DELETE FROM customers WHERE Customer_Id = ?";
+            PreparedStatement psC = DBConnection.connection.prepareStatement(sqlC);
+            psC.setInt(1, CustomerID);
+            psC.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

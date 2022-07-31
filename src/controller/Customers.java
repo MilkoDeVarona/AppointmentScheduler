@@ -98,7 +98,7 @@ public class Customers implements Initializable {
             alert.setContentText("Please select a customer to delete");
             alert.showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will delete the selected customer, do you want to continue?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will delete the selected customer and associated appointments, do you want to continue?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 model.Customers c = customersTable.getSelectionModel().getSelectedItem();
@@ -106,6 +106,11 @@ public class Customers implements Initializable {
                 customerInfo = DAOCustomers.getAllCustomers();
                 customersTable.setItems(customerInfo);
                 customersTable.refresh();
+
+                Alert alert2 = new Alert(Alert.AlertType.WARNING);
+                alert2.setTitle("Warning");
+                alert2.setContentText("Customer " + c.getCustomerID() + " has been deleted");
+                alert2.showAndWait();
             }
         }
     }
