@@ -8,9 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Customers database class.
+ */
 public class DAOCustomers {
 
-    // Get customer info to populate table on the Customers screen
+    /**
+     * Method gets all customers in the database and associated divisions.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Customers> getAllCustomers () throws SQLException{
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
         try {
@@ -35,7 +42,16 @@ public class DAOCustomers {
         return customerList;
     }
 
-    // Create a new customer in the database
+    /**
+     * Method creates a new customer in the database.
+     * @param customerName
+     * @param customerAddress
+     * @param customerPostalCode
+     * @param customerPhone
+     * @param customerDivision
+     * @return
+     * @throws SQLException
+     */
     public static boolean addCustomer (String customerName, String customerAddress, String customerPostalCode, String customerPhone, String customerDivision) throws SQLException {
         Divisions selectedDivision = DAODivisions.getDivisionID(customerDivision);
         try {
@@ -54,7 +70,17 @@ public class DAOCustomers {
         }
     }
 
-    // Update customer info in the database
+    /**
+     * Method updates customer information in the database
+     * @param customerName
+     * @param customerAddress
+     * @param customerPostalCode
+     * @param customerPhone
+     * @param customerDivision
+     * @param customerID
+     * @return
+     * @throws SQLException
+     */
     public static boolean updateCustomer (String customerName, String customerAddress, String customerPostalCode, String customerPhone, String  customerDivision, int customerID) throws SQLException {
         Divisions selectedDivision = DAODivisions.getDivisionID(customerDivision);
         try {
@@ -74,7 +100,11 @@ public class DAOCustomers {
         }
     }
 
-    // Delete a customer from the database
+    /**
+     * Method deletes a customer from the database.
+     * @param CustomerID
+     * @throws SQLException
+     */
     public static void deleteCustomer (int CustomerID) throws SQLException {
         try {
             String sql = "DELETE FROM customers WHERE Customer_Id = ?";
@@ -86,7 +116,11 @@ public class DAOCustomers {
         }
     }
 
-    // Gets total number of customers by country
+    /**
+     * Method gets total number of customers by country.
+     * @param country
+     * @return
+     */
     public static int getTotalCustomersByCountry (String country) {
         int total = 0;
         try {
@@ -103,7 +137,12 @@ public class DAOCustomers {
         return total;
     }
 
-    // Gets divisions by selected country
+    /**
+     * Method gets divisions by country.
+     * @param country
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<String> getDivisionsByCountry (String country) throws SQLException{
         ObservableList<String> divisionsList = FXCollections.observableArrayList();
         try {

@@ -17,10 +17,13 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Appointments controller class.
+ */
 public class Appointments implements Initializable {
     Stage stage;
     Parent scene;
-    static ObservableList<model.Appointments> appointmentsInfo;
+
     @FXML private TableView<model.Appointments> appointmentsTable;
     @FXML private TableColumn<?, ?> apptsColumnContact;
     @FXML private TableColumn<?, ?> apptsColumnCustomerID;
@@ -37,7 +40,11 @@ public class Appointments implements Initializable {
     @FXML private RadioButton radioButtonWeek;
     @FXML private ToggleGroup toggleGroup;
 
-    // Back to home button
+    /**
+     * Method sends user back to home screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML void onBackButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
@@ -46,7 +53,11 @@ public class Appointments implements Initializable {
         stage.show();
     }
 
-    // Add a new appointment button
+    /**
+     * Method sends user to Add Appointment screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML void onAddAppointmentButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsAdd.fxml"));
@@ -55,7 +66,11 @@ public class Appointments implements Initializable {
         stage.show();
     }
 
-    // Modify an existing appointment button
+    /**
+     * Method sends user to modify a selected appointment.
+     * @param event
+     * @throws IOException
+     */
     @FXML void onModifyAppointmentButton(ActionEvent event) throws IOException {
         if (appointmentsTable.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -70,7 +85,6 @@ public class Appointments implements Initializable {
 
             AppointmentsModify amc = loader.getController();
             amc.modSelectedAppointment(appointmentsTable.getSelectionModel().getSelectedItem());
-            //AppointmentsModify.modSelectedAppointment(appointmentsTable.getSelectionModel().getSelectedItem());
             if (appointmentsTable.getSelectionModel().getSelectedItem() == null) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning");
@@ -78,7 +92,6 @@ public class Appointments implements Initializable {
                 alert.showAndWait();
             } else {
                 stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-                //scene = FXMLLoader.load(getClass().getResource("/view/AppointmentsModify.fxml"));
                 Parent scene = loader.getRoot();
                 stage.setTitle("Modify Appointment");
                 stage.setScene(new Scene(scene));
@@ -87,7 +100,11 @@ public class Appointments implements Initializable {
         }
     }
 
-    // Deletes selected appointment
+    /**
+     * Method deletes selected appointment.
+     * @param event
+     * @throws SQLException
+     */
     @FXML void onDeleteAppointmentButton(ActionEvent event) throws SQLException {
         model.Appointments selected = appointmentsTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
@@ -102,39 +119,42 @@ public class Appointments implements Initializable {
                 model.Appointments a = appointmentsTable.getSelectionModel().getSelectedItem();
                 DAOAppointments.deleteAppointment(a.getAppointmentID());
 
-                appointmentsInfo = DAOAppointments.viewAllAppointments();
-                appointmentsTable.setItems(appointmentsInfo);
+                appointmentsTable.setItems(DAOAppointments.viewAllAppointments());
                 appointmentsTable.refresh();
 
                 Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                 alert2.setTitle("Appointment successfully deleted");
-                alert2.setContentText("Appointment " + selected.getAppointmentID() + " (" + selected.getType() + ") has been deleted");
+                alert2.setContentText("Appointment " + selected.getAppointmentID() + " of type " + selected.getType() + " has been deleted");
                 alert2.showAndWait();
             }
         }
     }
 
-    // Method views appointment depending on radio button selected
+    /**
+     * Method sets appointments table and toggles view depending on radio button selected.
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     public void onViewAppointments(ActionEvent event) throws SQLException {
         if (radioButtonAll.isSelected()) {
-            appointmentsInfo = DAOAppointments.viewAllAppointments();
-            appointmentsTable.setItems(appointmentsInfo);
+            appointmentsTable.setItems(DAOAppointments.viewAllAppointments());
         } else if (radioButtonMonth.isSelected()) {
-            appointmentsInfo = DAOAppointments.viewAppointmentsByMonth();
-            appointmentsTable.setItems(appointmentsInfo);
+            appointmentsTable.setItems(DAOAppointments.viewAppointmentsByMonth());
         } else if (radioButtonWeek.isSelected()) {
-            appointmentsInfo = DAOAppointments.viewAppointmentsByWeek();
-            appointmentsTable.setItems(appointmentsInfo);
+            appointmentsTable.setItems(DAOAppointments.viewAppointmentsByWeek());
         }
     }
 
-    // Method initializes appointments table
+    /**
+     * Methods initializes and populates appointments table.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            appointmentsInfo = DAOAppointments.viewAllAppointments();
-            appointmentsTable.setItems(appointmentsInfo);
+            appointmentsTable.setItems(DAOAppointments.viewAllAppointments());
             apptsColumnID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
             apptsColumnType.setCellValueFactory(new PropertyValueFactory<>("type"));
             apptsColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));

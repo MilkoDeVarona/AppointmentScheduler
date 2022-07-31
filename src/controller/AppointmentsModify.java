@@ -25,11 +25,12 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
+/**
+ * Modify appointments controller class.
+ */
 public class AppointmentsModify implements Initializable {
-
     Stage stage;
     Parent scene;
-    public static Appointments selectedAppointments;
     @FXML private DatePicker modAppointmentDate;
     @FXML private TextField modAppointmentDescription;
     @FXML private TextField modAppointmentID;
@@ -42,92 +43,197 @@ public class AppointmentsModify implements Initializable {
     @FXML private ComboBox<Users> modAppointmentUserID;
     @FXML private ComboBox<Customers> modAppointmentCustID;
 
-    // Populates Contact combo box *************************************************************************************
+    /**
+     * Method populates Contact combo box.
+     * @throws SQLException
+     */
     private void populateContactCB() throws SQLException {
-//        ObservableList<String> contactList = FXCollections.observableArrayList();
-//        try {
-//            ObservableList<Contacts> contacts = DAOContacts.getAllContacts();
-//            for (Contacts c : contacts) {
-//                contactList.add(c.getContactName());
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        modAppointmentContact.setItems(contactList);
         modAppointmentContact.setItems(DAOContacts.getAllContacts());
     }
 
-    // Populates Type combo box ****************************************************************************************
+    /**
+     * Method creates list of appointment types to populate Type combo box.
+     */
     private void populateTypeCB() {
         ObservableList<String> typeList = FXCollections.observableArrayList();
         typeList.addAll("Planning Session", "De-Briefing", "Informal", "Phone Call", "Priority", "Brainstorm");
         modAppointmentType.setItems(typeList);
     }
 
-    // Method combines selected date and start time ********************************************************************
-    public LocalDateTime startDayTime() {
+    /**
+     * Method combines selected date and start time into a start LocalDateTime object.
+     * @return
+     */
+    public LocalDateTime startDateTime() {
         LocalTime startTime = modAppointmentStart.getSelectionModel().getSelectedItem();
-        LocalDate appointmentDay = modAppointmentDate.getValue();
-        return LocalDateTime.of(appointmentDay, startTime);
+        LocalDate appointmentDateTime = modAppointmentDate.getValue();
+        return LocalDateTime.of(appointmentDateTime, startTime);
     }
 
-    // Method combines selected date and end time **********************************************************************
-    public LocalDateTime endDayTime() {
+    /**
+     * Method combines selected date and end time into an end LocalDateTime object.
+     * @return
+     */
+    public LocalDateTime endDateTime() {
         LocalTime endTime = modAppointmentEnd.getSelectionModel().getSelectedItem();
-        LocalDate appointmentDay = modAppointmentDate.getValue();
-        return LocalDateTime.of(appointmentDay, endTime);
+        LocalDate appointmentDateTime = modAppointmentDate.getValue();
+        return LocalDateTime.of(appointmentDateTime, endTime);
     }
 
-    // Method creates business hours ***********************************************************************************
+    /**
+     * Method creates business hours to populate start and end appointment hours combo boxes.
+     * @return
+     */
     public ObservableList<LocalTime> hoursOfBusiness() {
+
         ObservableList<LocalTime> hoursList = FXCollections.observableArrayList();
         LocalTime openHoursEST = LocalTime.of(8, 0);
         LocalTime closeHoursEST = LocalTime.of(22, 0);
-        ZoneId ESTTime = ZoneId.of("America/New_York");
-        ZoneId localDefaultTime = ZoneId.of(TimeZone.getDefault().getID());
-        ZonedDateTime openTimes = ZonedDateTime.of(LocalDate.now(), openHoursEST, ESTTime);
-        ZonedDateTime closedTimes = ZonedDateTime.of(LocalDate.now(), closeHoursEST, ESTTime);
-        ZonedDateTime openBusinessHours = openTimes.withZoneSameInstant(localDefaultTime);
-        ZonedDateTime closedBusinessHours = closedTimes.withZoneSameInstant(localDefaultTime);
-        ZonedDateTime tms = openBusinessHours.minusMinutes(30);
-        while (tms.isBefore(closedBusinessHours)) {
-            tms = tms.plusMinutes(30);
+
+        ZoneId timeEST = ZoneId.of("America/New_York");
+        ZoneId timeLocal = ZoneId.systemDefault();
+
+        ZonedDateTime openBusinessEST = ZonedDateTime.of(LocalDate.now(), openHoursEST, timeEST);
+        ZonedDateTime closeBusinessEST = ZonedDateTime.of(LocalDate.now(), closeHoursEST, timeEST);
+        ZonedDateTime openBusinessLocal = openBusinessEST.withZoneSameInstant(timeLocal);
+        ZonedDateTime closeBusinessLocal = closeBusinessEST.withZoneSameInstant(timeLocal);
+
+        ZonedDateTime tms = openBusinessLocal.minusMinutes(15);
+        while (tms.isBefore(closeBusinessLocal)) {
+            tms = tms.plusMinutes(15);
             hoursList.add(LocalTime.from(tms));
-            if ((tms.equals(closedBusinessHours) || tms.isAfter(closedBusinessHours))) {
+            if ((tms.equals(closeBusinessLocal) || tms.isAfter(closeBusinessLocal))) {
                 break;
             }
         }
         return hoursList;
     }
 
-    // Populates Start and End Time combo boxes in 30 minute increments ************************************************
+    /**
+     * Populates Start and End Time combo boxes in 15 minute increments.
+     */
     private void populateTimeCB() {
         modAppointmentStart.setItems(hoursOfBusiness());
         modAppointmentEnd.setItems(hoursOfBusiness());
     }
 
-    // Populates Customer ID combo box *********************************************************************************
+    /**
+     * Populates Customer ID combo box.
+     * @throws SQLException
+     */
     private void populateCustomerIDCB() throws SQLException {
         modAppointmentCustID.setItems(DAOCustomers.getAllCustomers());
     }
 
-    // Populates User ID combo box *************************************************************************************
+    /**
+     * Populates User ID combo box.
+     * @throws SQLException
+     */
     private void populateUserIDCB() throws SQLException {
-//        ObservableList<Integer> usersIDList = FXCollections.observableArrayList();
-//        ObservableList<Users>userList = DAOUSERS.getAllUsers();
-//        for (Users u : userList) {
-//            usersIDList.add(u.getUserID());
-//        }
-//        modAppointmentUserID.setItems(usersIDList);
         modAppointmentUserID.setItems(DAOUsers.getAllUsers());
     }
 
-    // Accepts selected customer from Customers screen *****************************************************************
-    public static void modSelectedAppointment2(Appointments appointment) {
-        selectedAppointments = appointment;
+    /**
+     * Method checks for empty fields and overlapping appointments when creating an appointment.
+     * @param appts
+     * @return
+     * @throws SQLException
+     */
+    public boolean alerts (String appts) throws SQLException {
+        if (modAppointmentTitle.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Title field can not be empty");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentDescription.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Description field can not be empty");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentLocation.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Location field can not be empty");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentContact.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Please select a contact");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentType.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Please select an appointment type");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentDate.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Please select an appointment date");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentStart.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Please select an appointment start time");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentEnd.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Please select an appointment end time");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentCustID.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Please select a customer");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (modAppointmentUserID.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Please select a user");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (startDateTime().isAfter(endDateTime()) || startDateTime().isEqual(endDateTime())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning!");
+            alert.setContentText("Start time can not be equal or after end time.");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 
-    // Populates table with selected appointment ***********************************************************************
+    /**
+     * Method receives the selected appointment from the Appointments screen and sets field values with the corresponding data.
+     * @param apptm
+     */
     public void modSelectedAppointment (Appointments apptm) {
         modAppointmentID.setText(String.valueOf(apptm.getAppointmentID()));
         modAppointmentTitle.setText(apptm.getTitle());
@@ -157,7 +263,11 @@ public class AppointmentsModify implements Initializable {
         }
     }
 
-    // Goes back to Appointments screen ********************************************************************************
+    /**
+     * Method cancels modify appointment action and sends user back to Appointments screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML void onCancelButton(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will cancel the update, do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -170,32 +280,41 @@ public class AppointmentsModify implements Initializable {
         }
     }
 
-    // Save changes to selected appointment *****************************************************************************************
-    @FXML void onSaveButton(ActionEvent event) {
-        String title = modAppointmentTitle.getText();
-        String description = modAppointmentDescription.getText();
-        String location = modAppointmentLocation.getText();
-        String type = modAppointmentType.getValue();
-        String appointments = modAppointmentID.getText();
-        LocalDateTime starts = startDayTime();
-        LocalDateTime ends = endDayTime();
-        Contacts contact = modAppointmentContact.getValue();
-        Customers customerID = modAppointmentCustID.getValue();
-        Users userID = modAppointmentUserID.getValue();
+    /**
+     * Method saves changes to selected appointment.
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     */
+    @FXML void onSaveButton(ActionEvent event) throws SQLException, IOException {
+        boolean valid = alerts(modAppointmentID.getText());
+        if (valid) {
+            String title = modAppointmentTitle.getText();
+            String description = modAppointmentDescription.getText();
+            String location = modAppointmentLocation.getText();
+            String type = modAppointmentType.getValue();
+            String appointments = modAppointmentID.getText();
+            LocalDateTime starts = startDateTime();
+            LocalDateTime ends = endDateTime();
+            Contacts contact = modAppointmentContact.getValue();
+            Customers customerID = modAppointmentCustID.getValue();
+            Users userID = modAppointmentUserID.getValue();
 
-        try {
             DAOAppointments.updateAppointment(title, description, location, type, starts, ends, customerID.getCustomerID(), userID.getUserID(), contact.getContactName(), appointments);
             stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
             stage.setTitle("Appointments");
             stage.setScene(new Scene(scene));
             stage.show();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
         }
     }
 
-    @Override //********************************************************************************************************
+    /**
+     * Method initializes and populates combo boxes.
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             populateTypeCB();

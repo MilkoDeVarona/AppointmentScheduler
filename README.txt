@@ -11,7 +11,7 @@ DATE : 7/28/202
 IDE : Intellij IDEA 2021.2.1 (Community Edition)
 JAVA JDK : 17.0.3.1
 JAVAFX SDK : 18.0.1
-MYSQL CONNECTOR : Java 8.0.291.jar
+MYSQL CONNECTOR : Java 8.0.291
 
 DIRECTIONS : 
 Extract file and open in Intellij. The first screen is the Login screen. User can log in with the following credentials: username = test, password = test. In case the user is located in a French speaking country this screen will be translated.
@@ -25,7 +25,3 @@ The Appointments screen will show a table with a list of appointments. The user 
 The Reports screen provides three different reports. The first allows the user to see how many of a specific appointment type exist for the selected month. The second allows the user to see all the appointments an existing contact has. The third allows the user to see how many customers from each country exist.
 
 ADDITIONAL REPORT DESCRIPTION : The third report provides the total number of customers per country.
-
-LAMBDA EXPRESSIONS : 
-1st. CustomersAdd controller, line 51
-2nd. Reports controller, line 96

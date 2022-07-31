@@ -22,11 +22,14 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Modify Customers controller class.
+ */
 public class CustomersModify implements Initializable {
     Stage stage;
     Parent scene;
-    public static Customers selectedCustomer;
 
+    public static Customers selectedCustomer;
     @FXML private TextField modCustomerID;
     @FXML private TextField modName;
     @FXML private TextField modAddress;
@@ -35,7 +38,9 @@ public class CustomersModify implements Initializable {
     @FXML private ComboBox<String> modCountryCB;
     @FXML private ComboBox<String> modDivisionCB;
 
-    // Populates country combo box *************************************************************************************
+    /**
+     * Method populates country combo box
+     */
     private void populateCountryComboBox(){
         ObservableList<String> countryList = FXCollections.observableArrayList();
         try {
@@ -49,7 +54,9 @@ public class CustomersModify implements Initializable {
         modCountryCB.setItems(countryList);
     }
 
-    // Populates divisions combo box ***********************************************************************************
+    /**
+     * Method populates divisions combo box.
+     */
     private void populateDivisionComboBox(){
         ObservableList <String> divisionList = FXCollections.observableArrayList();
         try {
@@ -63,7 +70,10 @@ public class CustomersModify implements Initializable {
         modDivisionCB.setItems(divisionList);
     }
 
-    // Selects divisions based on country selected *********************************************************************
+    /**
+     * Method selects divisions based on country selected.
+     * @param event
+     */
     @FXML private void sortDivisions (ActionEvent event) {
         ObservableList<String> divisionsList = FXCollections.observableArrayList();
         try {
@@ -75,26 +85,21 @@ public class CustomersModify implements Initializable {
             e.printStackTrace();
         }
         modDivisionCB.setItems(divisionsList);
-
-        modDivisionCB.setButtonCell(new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty) ;
-                if (empty || item == null) {
-                    setText("Select Subject");
-                } else {
-                    setText(item);
-                }
-            }
-        });
     }
 
-    // Accepts selected customer from Customers screen *****************************************************************
+    /**
+     * Method receives selected customer from Customers screen.
+     * @param customer
+     */
     public static void modCustomer (Customers customer) {
         selectedCustomer = customer;
     }
 
-    // Goes back to Customers screen ***********************************************************************************
+    /**
+     * Method sends user back ti Customers screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML void onCancelButton(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will cancel the update, do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -107,7 +112,12 @@ public class CustomersModify implements Initializable {
         }
     }
 
-    // Save changes to the selected customer ***********************************************************************************
+    /**
+     * Method saves changes to selected customer.
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     */
     @FXML void onSaveButton(ActionEvent event) throws SQLException, IOException {
         int customerID = Integer.parseInt(modCustomerID.getText());
         String customerName = modName.getText();
@@ -138,7 +148,12 @@ public class CustomersModify implements Initializable {
         }
     }
 
-    @Override /********************************************************************************************************/
+    /**
+     * Method initializes and populates combo boxes and text fields.
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateCountryComboBox();
         populateDivisionComboBox();

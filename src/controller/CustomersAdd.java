@@ -21,11 +21,14 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Add Customers controller class.
+ */
 public class CustomersAdd implements Initializable {
     Stage stage;
     Parent scene;
 
-    //@FXML private TextField addCustomerID;
+    @FXML private TextField addCustomerID;
     @FXML private TextField addAddress;
     @FXML private TextField addName;
     @FXML private TextField addPhone;
@@ -33,7 +36,9 @@ public class CustomersAdd implements Initializable {
     @FXML private ComboBox<String> addCountryCB;
     @FXML private ComboBox<String> addDivisionCB;
 
-    // Populates country combo box *************************************************************************************
+    /**
+     * Method populates country combo box
+     */
     private void populateCountryCB(){
         ObservableList<String> countryList = FXCollections.observableArrayList();
         try {
@@ -47,10 +52,13 @@ public class CustomersAdd implements Initializable {
         addCountryCB.setItems(countryList);
     }
 
-    // Populates divisions combo box. Lambda expression waits for country combo box to be selected to populate divisions combo box
+    /**
+     * Method populates divisions combo box.
+     * <p>Lambda expression waits for country combo box to be selected to populate divisions combo box.</p>
+     */
     private void populateDivisionCB(){
-        addCountryCB.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal == null) {
+        addCountryCB.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
                 addDivisionCB.getItems().clear();
                 addDivisionCB.setDisable(true);
             } else {
@@ -64,7 +72,10 @@ public class CustomersAdd implements Initializable {
         });
     }
 
-    // Selects divisions based on country selected *********************************************************************
+    /**
+     * Method selects divisions based on country selected.
+     * @param event
+     */
     @FXML private void sortDivisions (ActionEvent event) {
         ObservableList<String> divisionsList = FXCollections.observableArrayList();
         try {
@@ -76,21 +87,13 @@ public class CustomersAdd implements Initializable {
             e.printStackTrace();
         }
         addDivisionCB.setItems(divisionsList);
-
-        addDivisionCB.setButtonCell(new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty) ;
-                if (empty || item == null) {
-                    setText("Select Subject");
-                } else {
-                    setText(item);
-                }
-            }
-        });
     }
 
-    // Goes back to Customers screen ***********************************************************************************
+    /**
+     * Method sends user back to Customers screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML void onCancelButton(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will clear all text field values, do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -103,7 +106,12 @@ public class CustomersAdd implements Initializable {
         }
     }
 
-    // Saves a new customer ********************************************************************************************
+    /**
+     * Method saves a new customer.
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     */
     @FXML void onSaveButton(ActionEvent event) throws SQLException, IOException {
         String customerName = addName.getText();
         String customerAddress = addAddress.getText();
@@ -132,7 +140,12 @@ public class CustomersAdd implements Initializable {
         }
     }
 
-    @Override /********************************************************************************************************/
+    /**
+     * Method initializes and populates combo boxes.
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateCountryCB();
         populateDivisionCB();

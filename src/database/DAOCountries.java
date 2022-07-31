@@ -6,9 +6,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Countries database class.
+ */
 public class DAOCountries {
 
-    // Get all countries
+    /**
+     * Method gets all countries in the database.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Countries> getAllCountries () throws SQLException {
         ObservableList <Countries> countriesList = FXCollections.observableArrayList();
         try {
@@ -27,7 +34,12 @@ public class DAOCountries {
         return countriesList;
     }
 
-    // Get country by name
+    /**
+     * Method gets a country by name.
+     * @param Country
+     * @return
+     * @throws SQLException
+     */
     public static Countries getCountryByName (String Country) throws SQLException {
         String sql = "SELECT * FROM countries WHERE Country = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);

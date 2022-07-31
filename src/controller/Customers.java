@@ -17,6 +17,9 @@ import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Customers controller class.
+ */
 public class Customers implements Initializable {
     Stage stage;
     Parent scene;
@@ -31,7 +34,11 @@ public class Customers implements Initializable {
     @FXML private TableColumn<?, ?> customersColumnPhone;
     @FXML private TableColumn<?, ?> customersColumnPostalCode;
 
-    // Back to home button
+    /**
+     * Method sends user back to Home screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onBackButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -41,7 +48,11 @@ public class Customers implements Initializable {
         stage.show();
     }
 
-    // Add a new customer button
+    /**
+     * Method send user to Add Customer screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onAddCustomerButton(ActionEvent event) throws IOException{
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -51,7 +62,11 @@ public class Customers implements Initializable {
         stage.show();
     }
 
-    // Modify an existing customer button
+    /**
+     * Method sends user to Modify Customer screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onModifyCustomerButton(ActionEvent event) throws IOException {
         CustomersModify.modCustomer(customersTable.getSelectionModel().getSelectedItem());
@@ -69,7 +84,11 @@ public class Customers implements Initializable {
         }
     }
 
-    // Delete the selected customer button
+    /**
+     * Method deletes selected customer.
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void onDeleteCustomerButton(ActionEvent event) throws SQLException {
         model.Customers selected = customersTable.getSelectionModel().getSelectedItem();
@@ -91,7 +110,11 @@ public class Customers implements Initializable {
         }
     }
 
-    // Method initializes customer table
+    /**
+     * Method initializes customer table.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

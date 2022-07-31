@@ -7,9 +7,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Contacts database class.
+ */
 public class DAOContacts {
 
-    // Get all contacts
+    /**
+     * Method gets all contacts from database.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Contacts> getAllContacts() throws SQLException {
         ObservableList<Contacts> contactsList = FXCollections.observableArrayList();
         try {
@@ -29,7 +36,12 @@ public class DAOContacts {
         return contactsList;
     }
 
-    // Get contacts by ID
+    /**
+     * Method gets a contacts by name.
+     * @param contactName
+     * @return
+     * @throws SQLException
+     */
     public static Contacts getContactID (String contactName) throws SQLException {
         String sql = "SELECT * FROM contacts WHERE Contact_Name = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);

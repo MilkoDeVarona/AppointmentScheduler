@@ -7,9 +7,16 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Appointments database class.
+ */
 public class DAOAppointments {
 
-    // Method gets all appointments
+    /**
+     * Method gets all existing appointments in database.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointments> viewAllAppointments() throws SQLException {
         ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
         try {
@@ -41,11 +48,15 @@ public class DAOAppointments {
         return appointmentsList;
     }
 
-    // Method gets last month's appointments
+    /**
+     * Method selects for last month's appointments.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointments> viewAppointmentsByMonth() throws SQLException {
         ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID = c.Contact_ID WHERE MONTH(Start) = MONTH(NOW())";
+            String sql = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID = c.Contact_ID WHERE MONTH(Start) = MONTH(NOW()) ORDER BY Appointment_ID";
             PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -73,11 +84,15 @@ public class DAOAppointments {
         return appointmentsList;
     }
 
-    // Method gets last week's appointments
+    /**
+     * Method selects for last week's appointments.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointments> viewAppointmentsByWeek() throws SQLException {
         ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID = c.Contact_ID WHERE YEARWEEK(Start) = YEARWEEK(NOW())";
+            String sql = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID = c.Contact_ID WHERE YEARWEEK(Start) = YEARWEEK(NOW()) ORDER BY Appointment_ID";
             PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -105,7 +120,20 @@ public class DAOAppointments {
         return appointmentsList;
     }
 
-    // Create a new appointment in the database
+    /**
+     * Method creates a new appointment in the database.
+     * @param title
+     * @param description
+     * @param location
+     * @param type
+     * @param start
+     * @param end
+     * @param customerID
+     * @param userID
+     * @param contactName
+     * @return
+     * @throws SQLException
+     */
     public static boolean addAppointment (String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, Integer customerID, Integer userID, String contactName) throws SQLException {
         Contacts selectedContact = DAOContacts.getContactID(contactName);
         try {
@@ -128,7 +156,20 @@ public class DAOAppointments {
         }
     }
 
-    // Update appointment info in the database
+    /**
+     * Method updates appointment information in the database.
+     * @param title
+     * @param description
+     * @param location
+     * @param type
+     * @param start
+     * @param end
+     * @param customerID
+     * @param userID
+     * @param contactName
+     * @param appointmentID
+     * @throws SQLException
+     */
     public static void updateAppointment (String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, Integer customerID, Integer userID, String contactName, String appointmentID) throws SQLException {
         Contacts selectedContact = DAOContacts.getContactID(contactName);
         try {
@@ -151,7 +192,11 @@ public class DAOAppointments {
         }
     }
 
-    // Delete an appointment from the database
+    /**
+     * Method deletes an appointment from the database.
+     * @param AppointmentID
+     * @throws SQLException
+     */
     public static void deleteAppointment (int AppointmentID) throws SQLException {
         try {
             String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
@@ -163,7 +208,12 @@ public class DAOAppointments {
         }
     }
 
-    // Get total number of appointments by type and month
+    /**
+     * Method gets total number of appointments by type and month.
+     * @param type
+     * @param month
+     * @return
+     */
     public static int getTotalAppointmentsByTypeAndMonth (String type, String month) {
         int total = 0;
         try {

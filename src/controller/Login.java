@@ -20,11 +20,13 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Login controller class.
+ */
 public class Login implements Initializable {
     Stage stage;
     Parent scene;
@@ -37,78 +39,70 @@ public class Login implements Initializable {
     @FXML private Button loginButton;
     @FXML private Label locationLabel;
 
-    // Method creates a file log of successful log ins
+    /**
+     * Method creates a file log of successful log ins.
+     * @throws IOException
+     */
     public void loginActivitySuccessful () throws IOException {
         PrintWriter printwriter = new PrintWriter(new FileOutputStream(new File("login_activity.txt"),true));
         printwriter.append("User " +"'"+ userNameTextField.getText() + "' successfully logged in at " + LocalDate.now() + " " + LocalTime.now().truncatedTo(ChronoUnit.MINUTES) + "\n");
         printwriter.close();
     }
 
-    // Method creates a file log of unsuccessful log ins
+    /**
+     * Method creates a file log of unsuccessful log ins.
+     * @throws IOException
+     */
     public void loginActivityNotSuccessful () throws IOException {
         PrintWriter printwriter = new PrintWriter(new FileOutputStream(new File("login_activity.txt"),true));
         printwriter.append("User " +"'"+ userNameTextField.getText() + "' did not successfully log in at " + LocalDate.now() + " " + LocalTime.now().truncatedTo(ChronoUnit.MINUTES) + "\n");
         printwriter.close();
     }
 
-    // Method alerts to any existing appointments within 15 minutes
-     private void appointmentAlert () {
-         LocalDateTime ldt = LocalDateTime.now();
-         LocalDateTime ldt15 = LocalDateTime.now().plusMinutes(15);
-         ObservableList<Appointments> scheduledAppointment = FXCollections.observableArrayList();
+    /**
+     * Method alerts for existing appointments within 15 minutes.
+     * @throws SQLException
+     */
+    private void existingUpcomingAppointment() throws SQLException {
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime currentTime15 = LocalDateTime.now().plusMinutes(15);
+        ObservableList<Appointments> upcomingAppointmentsList = FXCollections.observableArrayList();
 
-         try {
-             ObservableList<Appointments> appointment = DAOAppointments.viewAllAppointments();
-             if (appointment == null) {
-                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                 alert.setTitle("Appointment Alert");
-                 alert.setHeaderText("Appointment alert");
-                 alert.setContentText("You have no scheduled appointments");
-                 alert.showAndWait();
-             } else {
-                 for(Appointments a : appointment) {
-                     if (a.getStart().isAfter(ldt) && a.getStart().isBefore(ldt15)) {
-                         scheduledAppointment.add(a);
+        try {
+            ObservableList<Appointments> allAppointmentsList = DAOAppointments.viewAllAppointments();
+            if (upcomingAppointmentsList != null) {
+                for (Appointments a : allAppointmentsList) {
+                    if (a.getStart().isAfter(currentTime) && a.getStart().isBefore(currentTime15)) {
+                        upcomingAppointmentsList.add(a);
 
-                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                         alert.setTitle("Appointment Alert");
-                         alert.setHeaderText("Appointment alert");
-                         alert.setContentText(
-                                 "You have an appointment"  + "\n" +
-                                 "Appointment #: " + a.getAppointmentID() +  "\n" +
-                                 "Appointment time: " + a.getStart() + "\n"
-                         );
-                         alert.showAndWait();
-
-                     } else {
-                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                         alert.setTitle("Appointment Alert");
-                         alert.setHeaderText("Appointment alert");
-                         alert.setContentText("You have no appointments scheduled for the next 15 minutes.");
-                         alert.showAndWait();
-                     }
-                 }
-             }
-         } catch (SQLException e) {
-             e.printStackTrace();
-         }
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Appointment Alert");
+                        alert.setHeaderText("Appointment alert");
+                        alert.setContentText(
+                                "You have an upcoming appointment"  + "\n" +
+                                        "Appointment #: " + a.getAppointmentID() +  "\n" +
+                                        "Appointment time: " + a.getStart() + "\n"
+                        );
+                        alert.showAndWait();
+                    }
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Appointment Alert");
+                alert.setHeaderText("Appointment alert");
+                alert.setContentText("You have no appointments scheduled for the next 15 minutes.");
+                alert.showAndWait();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Locale locale = Locale.getDefault();
-        rb = ResourceBundle.getBundle("utilities/Languages", locale);
-        loginLabel.setText(rb.getString("loginRB"));
-        passwordTextField.setPromptText(rb.getString("passwordTextRB"));
-        userNameTextField.setPromptText(rb.getString("userNameTextRB"));
-        loginButton.setText(rb.getString("loginButtonRB"));
-        locationLabel.setText(rb.getString("la"));
-
-        zoneLabel.setText(ZoneId.systemDefault().getId());
-        passwordTextField.setFocusTraversable(false);
-    }
-
-    // Method logs into application
+    /**
+     * Method logs into application.
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     public void onSubmitButtonAction(ActionEvent actionEvent) throws IOException {
         if (userNameTextField.getText().isBlank() && passwordTextField.getText().isBlank()) {
@@ -122,16 +116,10 @@ public class Login implements Initializable {
                 boolean isValid = DAOUsers.checkUserLogin(userNameTextField.getText(), passwordTextField.getText());
                 if (isValid) {
 
-//                    stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-//                    stage.hide();
-//
-//                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                    alert.setTitle("Appointment Alert");
-//                    alert.setHeaderText("Appointment alert");
-//                    alert.setContentText("You have no appointments scheduled for the next 15 minutes.");
-//                    alert.showAndWait();
+                    stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+                    stage.hide();
 
-                    //appointmentAlert();
+                    existingUpcomingAppointment();
                     loginActivitySuccessful();
                     stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
                     scene = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
@@ -142,10 +130,29 @@ public class Login implements Initializable {
                     loginActivityNotSuccessful ();
                     loginErrorLabel.setText(rb.getString("4"));
                 }
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Method initializes Login screen and translates it to French if system is set to French language.
+     * @param url
+     * @param resourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Locale locale = Locale.getDefault();
+        rb = ResourceBundle.getBundle("language/Languages", locale);
+        loginLabel.setText(rb.getString("loginRB"));
+        passwordTextField.setPromptText(rb.getString("passwordTextRB"));
+        userNameTextField.setPromptText(rb.getString("userNameTextRB"));
+        loginButton.setText(rb.getString("loginButtonRB"));
+        locationLabel.setText(rb.getString("la"));
+
+        zoneLabel.setText(ZoneId.systemDefault().getId());
+        passwordTextField.setFocusTraversable(false);
     }
 
 }

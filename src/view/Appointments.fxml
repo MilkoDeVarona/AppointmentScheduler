@@ -17,12 +17,12 @@
             <TableColumn fx:id="apptsColumnTitle" prefWidth="75.0" text="Title" />
                 <TableColumn fx:id="apptsColumnDescription" prefWidth="94.0" text="Description" />
             <TableColumn fx:id="apptsColumnLocation" prefWidth="103.0" text="Location" />
-            <TableColumn fx:id="apptsColumnContact" prefWidth="142.0" text="Contact" />
-                <TableColumn fx:id="apptsColumnType" minWidth="4.0" prefWidth="123.0" text="Type" />
-                <TableColumn fx:id="apptsColumnStartDate" prefWidth="100.0" text="Starts at" />
-                <TableColumn fx:id="apptsColumnEndDate" prefWidth="100.0" text="Ends at" />
-                <TableColumn fx:id="apptsColumnCustomerID" prefWidth="86.0" text="Customer ID" />
-            <TableColumn fx:id="apptsColumnUserID" prefWidth="90.0" text="User ID" />
+            <TableColumn fx:id="apptsColumnContact" prefWidth="124.0" text="Contact" />
+                <TableColumn fx:id="apptsColumnType" minWidth="4.0" prefWidth="125.0" text="Type" />
+                <TableColumn fx:id="apptsColumnStartDate" prefWidth="124.0" text="Starts at" />
+                <TableColumn fx:id="apptsColumnEndDate" prefWidth="119.0" text="Ends at" />
+                <TableColumn fx:id="apptsColumnCustomerID" prefWidth="85.0" text="Customer ID" />
+            <TableColumn fx:id="apptsColumnUserID" prefWidth="60.0" text="User ID" />
             </columns>
         </TableView>
         <Button layoutX="800.0" layoutY="584.0" mnemonicParsing="false" onAction="#onDeleteAppointmentButton" prefHeight="30.0" prefWidth="180.0" text="Delete Appointment" />

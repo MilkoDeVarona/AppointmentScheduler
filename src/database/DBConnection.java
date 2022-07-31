@@ -1,7 +1,10 @@
 package database;
-
 import java.sql.*;
 
+/**
+ * Connection database class.
+ * <p>Connects to and closes connection from database.</p>
+ */
 public abstract class DBConnection {
 
     private static final String protocol = "jdbc";
@@ -14,6 +17,9 @@ public abstract class DBConnection {
     private static final String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /**
+     * Method connects to database.
+     */
     public static void startConnection() {
         try {
             Class.forName(driver); // Locate Driver
@@ -25,13 +31,16 @@ public abstract class DBConnection {
         }
     }
 
+    /**
+     * Method closes connection to database.
+     */
     public static void closeConnection() {
         try {
             connection.close();
             System.out.println("Connection closed!");
         }
         catch(Exception e) {
-            // System.out.println("Error:" + e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -6,9 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Users database class.
+ */
 public class DAOUsers {
 
-    // Method gets all users
+    /**
+     * Method gets all users in the database.
+     * @return
+     */
     public static ObservableList<Users> getAllUsers() {
         ObservableList<Users> usersList = FXCollections.observableArrayList();
         try {
@@ -28,7 +34,12 @@ public class DAOUsers {
         return usersList;
     }
 
-    // Method check if user and pass combination is valid
+    /**
+     * Method checks if user and password combination is valid.
+     * @param userN
+     * @param userP
+     * @return
+     */
     public static boolean checkUserLogin(String userN, String userP) {
         try {
             String sql = "SELECT * FROM users WHERE User_Name = ? AND PASSWORD = ?";

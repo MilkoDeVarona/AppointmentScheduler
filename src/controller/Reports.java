@@ -25,6 +25,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Reports controller class.
+ */
 public class Reports implements Initializable {
     Stage stage;
     Parent scene;
@@ -45,19 +48,26 @@ public class Reports implements Initializable {
 
     // Report 1 ********************************************************************************************************
 
-    // Populates Type combo box
+    /**
+     * Method populates Type combo box.
+     */
     private void populateTypeCB() {
         ObservableList<String> typeList = FXCollections.observableArrayList("Planning Session", "De-Briefing", "Informal", "Phone Call", "Priority", "Brainstorm");
         reportsCBAppointments.setItems(typeList);
     }
 
-    // Populates Month combo box
+    /**
+     * Method populates Month combo box.
+     */
     private void populateMonthCB() {
         ObservableList<String> monthList = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
         reportsCBMonth.setItems(monthList);
     }
 
-    // Generates total number of appointments by type and month
+    /**
+     * Method generates total number of appointments by month and type.
+     * @param event
+     */
     @FXML void onTotalApptmsGenerate(ActionEvent event) {
         String type = reportsCBAppointments.getValue();
         String month = reportsCBMonth.getValue();
@@ -85,19 +95,31 @@ public class Reports implements Initializable {
 
     // Report 2 ********************************************************************************************************
 
-    // Populates Contact combo box
+    /**
+     * Method populates Contact combo box.
+     * @throws SQLException
+     */
     private void populateContactCB() throws SQLException {
         reportsCBContact.setItems(DAOContacts.getAllContacts());
     }
 
-    // Method filters appointments by contact. Lambda expression returns a contact to the filtered list if its ID matches the ID of the contact selected in the combo box
+    /**
+     * Method filters appointments by contact.
+     * <p>Lambda expression returns a contact to the filtered list if its ID matches the ID of the contact selected in the combo box.</p>
+     * @return
+     * @throws SQLException
+     */
     public ObservableList<Appointments> updateTable () throws SQLException {
         ObservableList<Appointments> getAllAppointments = DAOAppointments.viewAllAppointments();
-        FilteredList<Appointments> appointmentsByContact = new FilteredList<>(getAllAppointments, i -> i.getContactID() == reportsCBContact.getSelectionModel().getSelectedItem().getContactID());
+        FilteredList<Appointments> appointmentsByContact = new FilteredList<>(getAllAppointments, fl -> fl.getContactID() == reportsCBContact.getSelectionModel().getSelectedItem().getContactID());
         return appointmentsByContact;
     }
 
-    // Shows all appointments for the selected contact
+    /**
+     * Method shows all appointments for the selected contact.
+     * @param event
+     * @throws SQLException
+     */
     @FXML void onAppointmentsByContact(ActionEvent event) throws SQLException {
         reportsCtcTable.setItems(updateTable());
     }
@@ -105,12 +127,18 @@ public class Reports implements Initializable {
 
     // Report 3 ********************************************************************************************************
 
-    // Populates Country combo box
+    /**
+     * Method populates Country combo box.
+     * @throws SQLException
+     */
     private void populateCountryCB () throws SQLException {
         reportsCBCountry.setItems(DAOCountries.getAllCountries());
     }
 
-    // Shows total number of customers per country
+    /**
+     * Method dhows total number of customers per country.
+     * @param event
+     */
     @FXML void onTotalCustomersByCountry(ActionEvent event) {
         String country = reportsCBCountry.getSelectionModel().getSelectedItem().getCountryName();
         int total = DAOCustomers.getTotalCustomersByCountry(country);
@@ -119,7 +147,11 @@ public class Reports implements Initializable {
 
     // *****************************************************************************************************************
 
-    // Goes back to Home screen
+    /**
+     * Method sends user back to Home screen.
+     * @param event
+     * @throws IOException
+     */
     @FXML void onBackButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
@@ -128,6 +160,11 @@ public class Reports implements Initializable {
         stage.show();
     }
 
+    /**
+     * Method initializes reports screens and populates fields.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
