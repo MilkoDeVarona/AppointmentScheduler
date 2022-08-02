@@ -67,6 +67,9 @@ public class Login implements Initializable {
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime currentTime15 = LocalDateTime.now().plusMinutes(15);
         ObservableList<Appointments> upcomingAppointmentsList = FXCollections.observableArrayList();
+        boolean hasUpcomingApp = false;
+        int upcomingID = 0;
+        LocalDateTime upcomingTime = LocalDateTime.now();
 
         try {
             ObservableList<Appointments> allAppointmentsList = DAOAppointments.viewAllAppointments();
@@ -74,24 +77,31 @@ public class Login implements Initializable {
                 for (Appointments a : allAppointmentsList) {
                     if (a.getStart().isAfter(currentTime) && a.getStart().isBefore(currentTime15)) {
                         upcomingAppointmentsList.add(a);
-
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Appointment Alert");
-                        alert.setHeaderText("Appointment alert");
-                        alert.setContentText(
-                                "You have an upcoming appointment"  + "\n" +
-                                        "Appointment #: " + a.getAppointmentID() +  "\n" +
-                                        "Appointment time: " + a.getStart() + "\n"
-                        );
-                        alert.showAndWait();
+                        hasUpcomingApp = true;
+                        upcomingID = a.getAppointmentID();
+                        upcomingTime = a.getStart();
                     }
                 }
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Appointment Alert");
-                alert.setHeaderText("Appointment alert");
-                alert.setContentText("You have no appointments scheduled for the next 15 minutes.");
-                alert.showAndWait();
+
+                if (hasUpcomingApp) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Appointment Alert");
+                    alert.setHeaderText("Appointment alert");
+                    alert.setContentText(
+                            "You have an upcoming appointment"  + "\n" +
+                                    "Appointment #: " + upcomingID +  "\n" +
+                                    "Appointment time: " + upcomingTime + "\n"
+                    );
+                    alert.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Appointment Alert");
+                    alert.setHeaderText("Appointment alert");
+                    alert.setContentText("You have no appointments scheduled for the next 15 minutes.");
+                    alert.showAndWait();
+
+                }
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
