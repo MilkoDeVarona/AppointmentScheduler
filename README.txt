@@ -3,11 +3,6 @@ TITLE : Scheduling application
 
 PURPOSE : This is an appointment scheduling application. Users can create and manage appointments and customers. A MySQL database is used to store data. An access log file is also used to keep track of successsful and unsuccessful user login attempts.
 
-AUTHOR : Milko De Varona
-CONTACT : mvaron1@wgu.edu
-VERSION : 1.0
-DATE : 7/28/202
-
 IDE : Intellij IDEA 2021.2.1 (Community Edition)
 JAVA JDK : 17.0.3.1
 JAVAFX SDK : 18.0.1
