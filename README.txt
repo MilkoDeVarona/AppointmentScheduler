@@ -1,7 +1,6 @@
+### Scheduling application
 
-TITLE : Scheduling application
-
-PURPOSE : This is an appointment scheduling application. Users can create and manage appointments and customers. A MySQL database is used to store data. An access log file is also used to keep track of successsful and unsuccessful user login attempts.
+PURPOSE : This is an appointment scheduling application built in Java. Users can create and manage appointments and customers. A MySQL database is used to store data. An access log file is also used to keep track of successsful and unsuccessful user login attempts.
 
 IDE : Intellij IDEA 2021.2.1 (Community Edition)
 JAVA JDK : 17.0.3.1
@@ -15,7 +14,7 @@ After logging in the user will be in the Home screen with three different option
 
 The Customers screen will show a table with a list of customers and associated information. The user has the options to create a new customer, and modify or delete an existing customer.
 
-The Appointments screen will show a table with a list of appointments. The user can filter the appointments by every existing appointment, current month appointments, or current week appointments. The user has also the options to create a new appointment, and modify or delete an existing appointment.
+The Appointments screen will show a table with a list of appointments. The user can filter the appointments by all appointments, current month appointments, or current week appointments. The user has also the options to create a new appointment, and modify or delete an existing appointment.
 
 The Reports screen provides three different reports. The first allows the user to see how many of a specific appointment type exist for the selected month. The second allows the user to see all the appointments an existing contact has. The third allows the user to see how many customers from each country exist.
 
