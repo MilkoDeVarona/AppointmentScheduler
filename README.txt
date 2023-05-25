@@ -1,4 +1,4 @@
-### Scheduling application
+## Scheduling application
 
 PURPOSE : This is an appointment scheduling application built in Java. Users can create and manage appointments and customers. A MySQL database is used to store data. An access log file is also used to keep track of successsful and unsuccessful user login attempts.
 
